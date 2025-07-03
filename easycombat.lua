@@ -47,7 +47,7 @@ local function Initialize(self, level)
 	UIDropDownMenu_AddButton(info, level)
 
 	info.text = "Hunter Melee Raid (2)"
-	info.value = "Arcane Shot"
+	info.value = "Raptor Strike"
 	info.func = OnClick
 	UIDropDownMenu_AddButton(info, level)
 end
