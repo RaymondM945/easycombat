@@ -180,12 +180,12 @@ f:SetScript("OnUpdate", function(self, elapsed)
 					box1.texture:SetColorTexture(0, 1, 0, 1)
 				elseif not UnitIsUnit("target", "party1target") then
 					box1.texture:SetColorTexture(0, 0, 1, 1)
+				elseif not (name and sourceUnit == "player") and usable2 and not noMana2 then
+					box1.texture:SetColorTexture(1, 0, 1, 1)
 				elseif points >= 3 then
 					box1.texture:SetColorTexture(1, 0, 0, 1)
 				elseif usable and not noMana then
 					box1.texture:SetColorTexture(0, 1, 1, 1)
-				elseif not (name and sourceUnit == "player") and usable2 and not noMana2 then
-					box1.texture:SetColorTexture(1, 0, 1, 1)
 				end
 			else
 				local start, duration, enabled = GetSpellCooldown("Raptor Strike")
