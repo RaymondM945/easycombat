@@ -23,8 +23,10 @@ local function OnClick(self)
 		ChangeActionBarPage(6)
 	elseif self:GetText() == "Hunter Range (1)" then
 		ChangeActionBarPage(1)
-	elseif self:GetText() == "Hunter Melee Raid (2)" then
-		ChangeActionBarPage(2)
+	elseif self:GetText() == "Hunter Melee Raid (4)" then
+		ChangeActionBarPage(4)
+	elseif self:GetText() == "Hunter Range Raid (5)" then
+		ChangeActionBarPage(5)
 	end
 end
 
@@ -46,8 +48,12 @@ local function Initialize(self, level)
 	info.func = OnClick
 	UIDropDownMenu_AddButton(info, level)
 
-	info.text = "Hunter Melee Raid (2)"
+	info.text = "Hunter Melee Raid (4)"
 	info.value = "Raptor Strike"
+	info.func = OnClick
+	UIDropDownMenu_AddButton(info, level)
+	info.text = "Hunter Range Raid (5)"
+	info.value = "Arcane Shot"
 	info.func = OnClick
 	UIDropDownMenu_AddButton(info, level)
 end
