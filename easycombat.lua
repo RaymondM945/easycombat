@@ -124,10 +124,10 @@ f:SetScript("OnUpdate", function(self, elapsed)
 					box1.texture:SetColorTexture(0, 1, 0, 1)
 				elseif not sametarget then
 					box1.texture:SetColorTexture(0, 0, 1, 1)
+				elseif not (name2 and sourceUnit2 == "player") and usable3 and not noMana3 then
+					box1.texture:SetColorTexture(1, 0, 1, 1)
 				elseif not (name and sourceUnit == "player") and usable and not noMana and not close then
 					box1.texture:SetColorTexture(1, 0, 0, 1)
-				elseif not (name and sourceUnit2 == "player") and usable3 and not noMana3 then
-					box1.texture:SetColorTexture(1, 0, 1, 1)
 				elseif usable2 and not noMana2 and not close then
 					box1.texture:SetColorTexture(0, 1, 1, 1)
 				end
