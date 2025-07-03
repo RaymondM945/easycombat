@@ -113,11 +113,16 @@ f:SetScript("OnUpdate", function(self, elapsed)
 			local usable, noMana = IsUsableSpell(serpentStingName)
 
 			if selectedOption == "Arcane Shot" then
-				if not IsAutoRepeatSpell("Auto Shot") and not IsCurrentSpell("Attack") then
+				if not (IsAutoRepeatSpell("Auto Shot") or IsCurrentSpell("Attack")) then
 					box1.texture:SetColorTexture(0, 1, 0, 1)
 				elseif not UnitIsUnit("target", "party1target") then
 					box1.texture:SetColorTexture(0, 0, 1, 1)
-				elseif not (name and sourceUnit == "player") and usable and not noMana then
+				elseif
+					not (name and sourceUnit == "player")
+					and usable
+					and not noMana
+					and not CheckInteractDistance("target", 3)
+				then
 					box1.texture:SetColorTexture(1, 0, 0, 1)
 				end
 			elseif selectedOption == "Claw" then
