@@ -106,23 +106,36 @@ f:SetScript("OnUpdate", function(self, elapsed)
 					box1.texture:SetColorTexture(0, 1, 1, 1)
 				end
 			elseif selectedOption == "Claw" then
+				local points = GetComboPoints("player", "target")
 				if not isFollowing then
 					box1.texture:SetColorTexture(1, 1, 1, 1)
 				elseif not IsCurrentSpell("Attack") then
 					box1.texture:SetColorTexture(0, 1, 0, 1)
 				elseif not UnitIsUnit("target", raidLeaderUnitID .. "target") then
 					box1.texture:SetColorTexture(0, 0, 1, 1)
+				elseif GetComboPoints >= 3 then
+					box1.texture:SetColorTexture(1, 0, 0, 1)
+				elseif IsUsableSpell("Claw") then
+					box1.texture:SetColorTexture(0, 1, 1, 1)
 				end
 			else
 				local start, duration, enabled = GetSpellCooldown("Raptor Strike")
+
+				local wingclipname = GetSpellInfo(2974)
+				local name, _, _, _, _, _, sourceUnit = AuraUtil.FindAuraByName(wingclipname, "target", "HARMFUL")
+				local usable, noMana = IsUsableSpell(wingclipname)
+				local sametarget = UnitIsUnit("target", raidLeaderUnitID .. "target")
+
 				if not isFollowing then
 					box1.texture:SetColorTexture(1, 1, 1, 1)
 				elseif not IsCurrentSpell("Attack") then
 					box1.texture:SetColorTexture(0, 1, 0, 1)
-				elseif not UnitIsUnit("target", raidLeaderUnitID .. "target") then
+				elseif not sametarget then
 					box1.texture:SetColorTexture(0, 0, 1, 1)
 				elseif IsUsableSpell("Raptor Strike") and start == 0 then
 					box1.texture:SetColorTexture(0, 1, 1, 1)
+				elseif not (name and sourceUnit == "player") and usable and not noMana then
+					box1.texture:SetColorTexture(1, 0, 0, 1)
 				end
 			end
 		end
@@ -173,12 +186,13 @@ f:SetScript("OnUpdate", function(self, elapsed)
 				local wingclipname = GetSpellInfo(2974)
 				local name, _, _, _, _, _, sourceUnit = AuraUtil.FindAuraByName(wingclipname, "target", "HARMFUL")
 				local usable, noMana = IsUsableSpell(wingclipname)
+				local sametarget = UnitIsUnit("target", "party1target")
 
 				if not isFollowing then
 					box1.texture:SetColorTexture(1, 1, 1, 1)
 				elseif not IsCurrentSpell("Attack") then
 					box1.texture:SetColorTexture(0, 1, 0, 1)
-				elseif not UnitIsUnit("target", "party1target") then
+				elseif not sametarget then
 					box1.texture:SetColorTexture(0, 0, 1, 1)
 				elseif IsUsableSpell("Raptor Strike") and start == 0 then
 					box1.texture:SetColorTexture(0, 1, 1, 1)
