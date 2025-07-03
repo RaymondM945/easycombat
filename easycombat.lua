@@ -63,6 +63,7 @@ local f = CreateFrame("Frame")
 f:SetScript("OnUpdate", function(self, elapsed)
 	box1.texture:SetColorTexture(0, 0, 0, 1)
 	if IsInGroup() then
+		print("you are in group")
 		if UnitAffectingCombat("party1") and UnitHealth("party1target") ~= UnitHealthMax("party1target") then
 			box1.texture:SetColorTexture(1, 1, 0, 1)
 
@@ -94,6 +95,9 @@ f:SetScript("OnUpdate", function(self, elapsed)
 			end
 		else
 		end
+	elseif IsInRaid() then
+		print("you are in raid")
+	else
 	end
 end)
 
