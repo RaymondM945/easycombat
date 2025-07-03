@@ -1,4 +1,5 @@
 local selectedOption = "Claw"
+local raidLeaderUnitID = nil
 
 local myFrame = CreateFrame("Frame", "MySelectionFrame", UIParent, "BasicFrameTemplateWithInset")
 myFrame:SetSize(220, 70)
@@ -62,8 +63,41 @@ local isFollowing = false
 local f = CreateFrame("Frame")
 f:SetScript("OnUpdate", function(self, elapsed)
 	box1.texture:SetColorTexture(0, 0, 0, 1)
-	if IsInGroup() then
-		print("you are in group")
+	if IsInRaid() then
+		if
+			UnitAffectingCombat(raidLeaderUnitID)
+			and UnitHealth(raidLeaderUnitID .. "target") ~= UnitHealthMax(raidLeaderUnitID .. "target")
+		then
+			box1.texture:SetColorTexture(1, 1, 0, 1)
+
+			if selectedOption == "Arcane Shot" then
+				if not IsAutoRepeatSpell("Auto Shot") then
+					box1.texture:SetColorTexture(0, 1, 0, 1)
+				elseif not UnitIsUnit("target", raidLeaderUnitID .. "target") then
+					box1.texture:SetColorTexture(0, 0, 1, 1)
+				end
+			elseif selectedOption == "Claw" then
+				if not isFollowing then
+					box1.texture:SetColorTexture(1, 1, 1, 1)
+				elseif not IsCurrentSpell("Attack") then
+					box1.texture:SetColorTexture(0, 1, 0, 1)
+				elseif not UnitIsUnit("target", raidLeaderUnitID .. "target") then
+					box1.texture:SetColorTexture(0, 0, 1, 1)
+				end
+			else
+				local start, duration, enabled = GetSpellCooldown("Raptor Strike")
+				if not isFollowing then
+					box1.texture:SetColorTexture(1, 1, 1, 1)
+				elseif not IsCurrentSpell("Attack") then
+					box1.texture:SetColorTexture(0, 1, 0, 1)
+				elseif not UnitIsUnit("target", raidLeaderUnitID .. "target") then
+					box1.texture:SetColorTexture(0, 0, 1, 1)
+				elseif IsUsableSpell("Raptor Strike") and start == 0 then
+					box1.texture:SetColorTexture(0, 1, 1, 1)
+				end
+			end
+		end
+	elseif IsInGroup() then
 		if UnitAffectingCombat("party1") and UnitHealth("party1target") ~= UnitHealthMax("party1target") then
 			box1.texture:SetColorTexture(1, 1, 0, 1)
 
@@ -95,16 +129,33 @@ f:SetScript("OnUpdate", function(self, elapsed)
 			end
 		else
 		end
-	elseif IsInRaid() then
-		print("you are in raid")
 	else
 	end
 end)
 
 f:RegisterEvent("AUTOFOLLOW_BEGIN")
 f:RegisterEvent("AUTOFOLLOW_END")
+f:RegisterEvent("GROUP_ROSTER_UPDATE")
+f:RegisterEvent("PLAYER_ENTERING_WORLD")
 
 f:SetScript("OnEvent", function(self, event, ...)
+	if IsInRaid() then
+		print("You are in a raid!")
+		for i = 1, GetNumGroupMembers() do
+			local name, rank = GetRaidRosterInfo(i)
+			if rank == 2 then
+				raidLeaderName = name
+				raidLeaderUnitID = "raid" .. i
+				print("Raid leader is: " .. raidLeaderName .. " (" .. raidLeaderUnitID .. ")")
+				break
+			end
+		end
+	elseif IsInGroup() then
+		print("You are in a party!")
+	else
+		print("You are solo!")
+	end
+
 	if event == "AUTOFOLLOW_BEGIN" then
 		local name = ...
 		isFollowing = true
