@@ -107,17 +107,21 @@ f:SetScript("OnUpdate", function(self, elapsed)
 	elseif IsInGroup() then
 		if UnitAffectingCombat("party1") and UnitHealth("party1target") ~= UnitHealthMax("party1target") then
 			box1.texture:SetColorTexture(1, 1, 0, 1)
-			local aura = AuraUtil.FindAuraByName("Serpent Sting", unit, "HARMFUL")
-			if aura and aura.sourceUnit == "player" then
-				SendChatMessage("Serpent Sting is on the target!", "PARTY")
-			else
-				SendChatMessage("Serpent Sting is not on the target!", "PARTY")
-			end
+			local serpentStingName = GetSpellInfo(1978)
+
 			if selectedOption == "Arcane Shot" then
 				if not IsAutoRepeatSpell("Auto Shot") then
 					box1.texture:SetColorTexture(0, 1, 0, 1)
 				elseif not UnitIsUnit("target", "party1target") then
 					box1.texture:SetColorTexture(0, 0, 1, 1)
+				end
+
+				local name, _, _, _, _, _, sourceUnit = AuraUtil.FindAuraByName(serpentStingName, "target", "HARMFUL")
+
+				if name and sourceUnit == "player" then
+					SendChatMessage("Serpent Sting is on the target!", "PARTY")
+				else
+					SendChatMessage("Serpent Sting is not on the target!", "PARTY")
 				end
 			elseif selectedOption == "Claw" then
 				if not isFollowing then
