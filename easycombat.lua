@@ -19,11 +19,11 @@ local function OnClick(self)
 	selectedOption = self.value
 	print("You selected: " .. self:GetText())
 
-	if self:GetText() == "Hunter Melee" then
+	if self:GetText() == "Hunter Melee (6)" then
 		ChangeActionBarPage(6)
-	elseif self:GetText() == "Hunter Range" then
+	elseif self:GetText() == "Hunter Range (1)" then
 		ChangeActionBarPage(1)
-	elseif self:GetText() == "Hunter Melee Raid" then
+	elseif self:GetText() == "Hunter Melee Raid (2)" then
 		ChangeActionBarPage(2)
 	end
 end
@@ -36,17 +36,17 @@ local function Initialize(self, level)
 	info.func = OnClick
 	UIDropDownMenu_AddButton(info, level)
 
-	info.text = "Hunter Melee"
+	info.text = "Hunter Melee (6)"
 	info.value = "Raptor Strike"
 	info.func = OnClick
 	UIDropDownMenu_AddButton(info, level)
 
-	info.text = "Hunter Range"
+	info.text = "Hunter Range (1)"
 	info.value = "Arcane Shot"
 	info.func = OnClick
 	UIDropDownMenu_AddButton(info, level)
 
-	info.text = "Hunter Melee Raid"
+	info.text = "Hunter Melee Raid (2)"
 	info.value = "Arcane Shot"
 	info.func = OnClick
 	UIDropDownMenu_AddButton(info, level)
