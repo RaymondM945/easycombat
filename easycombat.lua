@@ -108,17 +108,16 @@ f:SetScript("OnUpdate", function(self, elapsed)
 		if UnitAffectingCombat("party1") and UnitHealth("party1target") ~= UnitHealthMax("party1target") then
 			box1.texture:SetColorTexture(1, 1, 0, 1)
 
+			local serpentStingName = GetSpellInfo(1978)
+			local name, _, _, _, _, _, sourceUnit = AuraUtil.FindAuraByName(serpentStingName, "target", "HARMFUL")
+			local usable, noMana = IsUsableSpell(serpentStingName)
+
 			if selectedOption == "Arcane Shot" then
 				if not IsAutoRepeatSpell("Auto Shot") then
 					box1.texture:SetColorTexture(0, 1, 0, 1)
 				elseif not UnitIsUnit("target", "party1target") then
 					box1.texture:SetColorTexture(0, 0, 1, 1)
-				end
-
-				local serpentStingName = GetSpellInfo(1978)
-				local name, _, _, _, _, _, sourceUnit = AuraUtil.FindAuraByName(serpentStingName, "target", "HARMFUL")
-				local usable, noMana = IsUsableSpell(serpentStingName)
-				if not (name and sourceUnit == "player") and usable and not noMana then
+				elseif not (name and sourceUnit == "player") and usable and not noMana then
 					box1.texture:SetColorTexture(1, 0, 0, 1)
 				end
 			elseif selectedOption == "Claw" then
