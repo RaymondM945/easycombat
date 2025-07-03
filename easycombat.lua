@@ -127,7 +127,7 @@ f:SetScript("OnUpdate", function(self, elapsed)
 				then
 					box1.texture:SetColorTexture(1, 0, 0, 1)
 				elseif usable2 and not noMana2 and not CheckInteractDistance("target", 3) then
-					box1.texture:SetColorTexture(1, 0, 1, 1)
+					box1.texture:SetColorTexture(0, 1, 1, 1)
 				end
 			elseif selectedOption == "Claw" then
 				local points = GetComboPoints("player", "target")
