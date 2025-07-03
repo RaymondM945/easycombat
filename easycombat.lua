@@ -59,13 +59,14 @@ f:SetScript("OnUpdate", function(self, elapsed)
 	if IsInGroup() then
 		if UnitAffectingCombat("party1") and UnitHealth("party1target") ~= UnitHealthMax("party1target") then
 			box1.texture:SetColorTexture(1, 1, 0, 1)
-			if not isFollowing then
+			if not isFollowing and selectedOption ~= "Arcane Shot" then
 				box1.texture:SetColorTexture(1, 1, 1, 1)
 			elseif not IsCurrentSpell("Attack") then
 				box1.texture:SetColorTexture(0, 1, 0, 1)
 			elseif not UnitIsUnit("target", "party1target") then
 				box1.texture:SetColorTexture(0, 0, 1, 1)
 			end
+		else
 		end
 	end
 end)
