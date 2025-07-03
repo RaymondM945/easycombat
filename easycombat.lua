@@ -113,20 +113,16 @@ f:SetScript("OnUpdate", function(self, elapsed)
 				local name, _, _, _, _, _, sourceUnit = AuraUtil.FindAuraByName(serpentStingName, "target", "HARMFUL")
 				local usable, noMana = IsUsableSpell(serpentStingName)
 				local usable2, noMana2 = IsUsableSpell("Arcane Shot")
+				local close = CheckInteractDistance("target", 3)
 				if not isFollowing then
 					box1.texture:SetColorTexture(1, 1, 1, 1)
 				elseif not (IsAutoRepeatSpell("Auto Shot") or IsCurrentSpell("Attack")) then
 					box1.texture:SetColorTexture(0, 1, 0, 1)
 				elseif not UnitIsUnit("target", "party1target") then
 					box1.texture:SetColorTexture(0, 0, 1, 1)
-				elseif
-					not (name and sourceUnit == "player")
-					and usable
-					and not noMana
-					and not CheckInteractDistance("target", 3)
-				then
+				elseif not (name and sourceUnit == "player") and usable and not noMana and not close then
 					box1.texture:SetColorTexture(1, 0, 0, 1)
-				elseif usable2 and not noMana2 and not CheckInteractDistance("target", 3) then
+				elseif usable2 and not noMana2 and not close then
 					box1.texture:SetColorTexture(0, 1, 1, 1)
 				end
 			elseif selectedOption == "Claw" then
