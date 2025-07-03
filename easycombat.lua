@@ -94,7 +94,7 @@ f:SetScript("OnUpdate", function(self, elapsed)
 				local close = CheckInteractDistance("target", 3) or false
 				local sametarget = UnitIsUnit("target", raidLeaderUnitID .. "target")
 
-				if not IsAutoRepeatSpell("Auto Shot") then
+				if not IsAutoRepeatSpell("Auto Shot") or IsCurrentSpell("Attack")) then 
 					box1.texture:SetColorTexture(0, 1, 0, 1)
 				elseif not sametarget then
 					box1.texture:SetColorTexture(0, 0, 1, 1)
