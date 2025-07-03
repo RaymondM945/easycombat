@@ -57,14 +57,14 @@ local f = CreateFrame("Frame")
 f:SetScript("OnUpdate", function(self, elapsed)
 	box1.texture:SetColorTexture(0, 0, 0, 1)
 	if not IsInGroup() then
-		if UnitAffectingCombat("player") and UnitHealth("target") ~= UnitHealthMax("target") then
+		if UnitAffectingCombat("party1") and UnitHealth("party1target") ~= UnitHealthMax("party1target") then
 			box1.texture:SetColorTexture(1, 1, 0, 1)
 			if not isFollowing then
 				box1.texture:SetColorTexture(1, 1, 1, 1)
 			elseif not IsCurrentSpell("Attack") then
-				box1.texture:SetColorTexture(1, 0, 0, 1)
-			elseif not UnitIsUnit("target", "party1target") then
 				box1.texture:SetColorTexture(0, 1, 0, 1)
+			elseif not UnitIsUnit("target", "party1target") then
+				box1.texture:SetColorTexture(0, 0, 1, 1)
 			end
 		end
 	end
