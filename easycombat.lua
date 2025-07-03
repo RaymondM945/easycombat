@@ -78,10 +78,26 @@ f:SetScript("OnUpdate", function(self, elapsed)
 			box1.texture:SetColorTexture(1, 1, 0, 1)
 
 			if selectedOption == "Arcane Shot" then
+				local serpentStingName = GetSpellInfo(1978)
+				local huntersMarkName = GetSpellInfo(1130)
+				local name, _, _, _, _, _, sourceUnit = AuraUtil.FindAuraByName(serpentStingName, "target", "HARMFUL")
+				local name2, _, _, _, _, _, sourceUnit2 = AuraUtil.FindAuraByName(huntersMarkName, "target", "HARMFUL")
+				local usable, noMana = IsUsableSpell(serpentStingName)
+				local usable2, noMana2 = IsUsableSpell("Arcane Shot")
+				local usable3, noMana3 = IsUsableSpell(huntersMarkName)
+				local close = CheckInteractDistance("target", 3) or false
+				local sametarget = UnitIsUnit("target", raidLeaderUnitID .. "target")
+
 				if not IsAutoRepeatSpell("Auto Shot") then
 					box1.texture:SetColorTexture(0, 1, 0, 1)
-				elseif not UnitIsUnit("target", raidLeaderUnitID .. "target") then
+				elseif not sametarget then
 					box1.texture:SetColorTexture(0, 0, 1, 1)
+				elseif not (name2 and sourceUnit2 == "player") and usable3 and not noMana3 then
+					box1.texture:SetColorTexture(1, 0, 1, 1)
+				elseif not (name and sourceUnit == "player") and usable and not noMana and not close then
+					box1.texture:SetColorTexture(1, 0, 0, 1)
+				elseif usable2 and not noMana2 and not close then
+					box1.texture:SetColorTexture(0, 1, 1, 1)
 				end
 			elseif selectedOption == "Claw" then
 				if not isFollowing then
@@ -147,6 +163,11 @@ f:SetScript("OnUpdate", function(self, elapsed)
 				end
 			else
 				local start, duration, enabled = GetSpellCooldown("Raptor Strike")
+
+				local wingclipname = GetSpellInfo(2974)
+				local name, _, _, _, _, _, sourceUnit = AuraUtil.FindAuraByName(wingclipname, "target", "HARMFUL")
+				local usable, noMana = IsUsableSpell(wingclipname)
+
 				if not isFollowing then
 					box1.texture:SetColorTexture(1, 1, 1, 1)
 				elseif not IsCurrentSpell("Attack") then
@@ -155,6 +176,8 @@ f:SetScript("OnUpdate", function(self, elapsed)
 					box1.texture:SetColorTexture(0, 0, 1, 1)
 				elseif IsUsableSpell("Raptor Strike") and start == 0 then
 					box1.texture:SetColorTexture(0, 1, 1, 1)
+				elseif not (name and sourceUnit == "player") and usable and not noMana then
+					box1.texture:SetColorTexture(1, 0, 0, 1)
 				end
 			end
 		else
