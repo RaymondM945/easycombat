@@ -76,11 +76,11 @@ myCheckbox:SetChecked(checkfollow)
 myCheckbox:SetScript("OnClick", function(self)
 	if self:GetChecked() then
 		print("Checkbox enabled!")
+		checkfollow = true
 	else
 		print("Checkbox disabled!")
+		checkfollow = false
 	end
-
-	checkfollow = self:GetChecked()
 end)
 
 local box1 = CreateFrame("Frame", "MyBox1", UIParent)
@@ -113,7 +113,7 @@ f:SetScript("OnUpdate", function(self, elapsed)
 				local close = CheckInteractDistance("target", 3) or false
 				local sametarget = UnitIsUnit("target", raidLeaderUnitID .. "target")
 
-				if not isFollowing and checkfollow then
+				if (not isFollowing) and checkfollow then
 					box1.texture:SetColorTexture(1, 1, 1, 1)
 				elseif not (IsAutoRepeatSpell("Auto Shot") or IsCurrentSpell("Attack")) then
 					box1.texture:SetColorTexture(0, 1, 0, 1)
@@ -128,7 +128,7 @@ f:SetScript("OnUpdate", function(self, elapsed)
 				end
 			elseif selectedOption == "Claw" then
 				local points = GetComboPoints("player", "target")
-				if not isFollowing and checkfollow then
+				if (not isFollowing) and checkfollow then
 					box1.texture:SetColorTexture(1, 1, 1, 1)
 				elseif not IsCurrentSpell("Attack") then
 					box1.texture:SetColorTexture(0, 1, 0, 1)
@@ -147,7 +147,7 @@ f:SetScript("OnUpdate", function(self, elapsed)
 				local usable, noMana = IsUsableSpell(wingclipname)
 				local sametarget = UnitIsUnit("target", raidLeaderUnitID .. "target")
 
-				if not isFollowing and checkfollow then
+				if (not isFollowing) and checkfollow then
 					box1.texture:SetColorTexture(1, 1, 1, 1)
 				elseif not IsCurrentSpell("Attack") then
 					box1.texture:SetColorTexture(0, 1, 0, 1)
@@ -174,7 +174,7 @@ f:SetScript("OnUpdate", function(self, elapsed)
 				local usable3, noMana3 = IsUsableSpell(huntersMarkName)
 				local close = CheckInteractDistance("target", 3) or false
 				local sametarget = UnitIsUnit("target", "party1target")
-				if not isFollowing and checkfollow then
+				if (not isFollowing) and checkfollow then
 					box1.texture:SetColorTexture(1, 1, 1, 1)
 				elseif not (IsAutoRepeatSpell("Auto Shot") or IsCurrentSpell("Attack")) then
 					box1.texture:SetColorTexture(0, 1, 0, 1)
@@ -195,7 +195,7 @@ f:SetScript("OnUpdate", function(self, elapsed)
 				local name, _, _, _, _, _, sourceUnit =
 					AuraUtil.FindAuraByName(faerieFireFeralName, "target", "HARMFUL")
 
-				if not isFollowing and checkfollow then
+				if (not isFollowing) and checkfollow then
 					box1.texture:SetColorTexture(1, 1, 1, 1)
 				elseif not IsCurrentSpell("Attack") then
 					box1.texture:SetColorTexture(0, 1, 0, 1)
@@ -216,7 +216,7 @@ f:SetScript("OnUpdate", function(self, elapsed)
 				local usable, noMana = IsUsableSpell(wingclipname)
 				local sametarget = UnitIsUnit("target", "party1target")
 
-				if not isFollowing and checkfollow then
+				if (not isFollowing) and checkfollow then
 					box1.texture:SetColorTexture(1, 1, 1, 1)
 				elseif not IsCurrentSpell("Attack") then
 					box1.texture:SetColorTexture(0, 1, 0, 1)
