@@ -126,12 +126,11 @@ f:SetScript("OnUpdate", function(self, elapsed)
 					and not CheckInteractDistance("target", 3)
 				then
 					box1.texture:SetColorTexture(1, 0, 0, 1)
-				elseif usable2 and not noMana2 and not CheckInteractDistance("target", 3)then
+				elseif usable2 and not noMana2 and not CheckInteractDistance("target", 3) then
 					box1.texture:SetColorTexture(1, 0, 1, 1)
 				end
 			elseif selectedOption == "Claw" then
-
-                local points = GetComboPoints("player", "target")
+				local points = GetComboPoints("player", "target")
 
 				if not isFollowing then
 					box1.texture:SetColorTexture(1, 1, 1, 1)
@@ -139,10 +138,10 @@ f:SetScript("OnUpdate", function(self, elapsed)
 					box1.texture:SetColorTexture(0, 1, 0, 1)
 				elseif not UnitIsUnit("target", "party1target") then
 					box1.texture:SetColorTexture(0, 0, 1, 1)
-                elseif GetComboPoints >= 3 then
-                        box1.texture:SetColorTexture(1, 0, 0, 1)
-                elseif IsUsableSpell("Claw")
-                		box1.texture:SetColorTexture(0, 1, 1, 1)
+				elseif GetComboPoints >= 3 then
+					box1.texture:SetColorTexture(1, 0, 0, 1)
+				elseif IsUsableSpell("Claw") then
+					box1.texture:SetColorTexture(0, 1, 1, 1)
 				end
 			else
 				local start, duration, enabled = GetSpellCooldown("Raptor Strike")
