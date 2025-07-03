@@ -169,6 +169,10 @@ f:SetScript("OnUpdate", function(self, elapsed)
 			elseif selectedOption == "Claw" then
 				local points = GetComboPoints("player", "target")
 				local usable, noMana = IsUsableSpell("Claw")
+				local faerieFireFeralName = GetSpellInfo(16857)
+				local usable2, noMana2 = IsUsableSpell(faerieFireFeralName)
+				local name, _, _, _, _, _, sourceUnit =
+					AuraUtil.FindAuraByName(faerieFireFeralName, "target", "HARMFUL")
 
 				if not isFollowing then
 					box1.texture:SetColorTexture(1, 1, 1, 1)
@@ -180,6 +184,8 @@ f:SetScript("OnUpdate", function(self, elapsed)
 					box1.texture:SetColorTexture(1, 0, 0, 1)
 				elseif usable and not noMana then
 					box1.texture:SetColorTexture(0, 1, 1, 1)
+				elseif not (name and sourceUnit == "player") and usable2 and not noMana2 then
+					box1.texture:SetColorTexture(1, 0, 1, 1)
 				end
 			else
 				local start, duration, enabled = GetSpellCooldown("Raptor Strike")
