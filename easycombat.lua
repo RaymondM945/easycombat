@@ -1,5 +1,6 @@
 local selectedOption = "Claw"
 local raidLeaderUnitID = nil
+local checkfollow = true
 
 local myFrame = CreateFrame("Frame", "MySelectionFrame", UIParent, "BasicFrameTemplateWithInset")
 myFrame:SetSize(220, 70)
@@ -64,6 +65,24 @@ UIDropDownMenu_SetButtonWidth(dropdown, 124)
 UIDropDownMenu_SetSelectedID(dropdown, 1)
 UIDropDownMenu_JustifyText(dropdown, "LEFT")
 
+local myCheckbox = CreateFrame("CheckButton", "MySelectionFrameCheckbox", myFrame, "ChatConfigCheckButtonTemplate")
+
+myCheckbox:SetPoint("TOPLEFT", dropdown, "BOTTOMLEFT", 0, -10)
+
+MySelectionFrameCheckboxText:SetText("Check for follow")
+
+myCheckbox:SetChecked(checkfollow)
+
+myCheckbox:SetScript("OnClick", function(self)
+	if self:GetChecked() then
+		print("Checkbox enabled!")
+	else
+		print("Checkbox disabled!")
+	end
+
+	checkfollow = self:GetChecked()
+end)
+
 local box1 = CreateFrame("Frame", "MyBox1", UIParent)
 box1:SetSize(50, 50)
 box1:SetPoint("CENTER", 25, 0)
@@ -94,7 +113,9 @@ f:SetScript("OnUpdate", function(self, elapsed)
 				local close = CheckInteractDistance("target", 3) or false
 				local sametarget = UnitIsUnit("target", raidLeaderUnitID .. "target")
 
-				if not (IsAutoRepeatSpell("Auto Shot") or IsCurrentSpell("Attack")) then
+				if not isFollowing and checkfollow then
+					box1.texture:SetColorTexture(1, 1, 1, 1)
+				elseif not (IsAutoRepeatSpell("Auto Shot") or IsCurrentSpell("Attack")) then
 					box1.texture:SetColorTexture(0, 1, 0, 1)
 				elseif not sametarget then
 					box1.texture:SetColorTexture(0, 0, 1, 1)
@@ -107,7 +128,7 @@ f:SetScript("OnUpdate", function(self, elapsed)
 				end
 			elseif selectedOption == "Claw" then
 				local points = GetComboPoints("player", "target")
-				if not isFollowing then
+				if not isFollowing and checkfollow then
 					box1.texture:SetColorTexture(1, 1, 1, 1)
 				elseif not IsCurrentSpell("Attack") then
 					box1.texture:SetColorTexture(0, 1, 0, 1)
@@ -126,7 +147,7 @@ f:SetScript("OnUpdate", function(self, elapsed)
 				local usable, noMana = IsUsableSpell(wingclipname)
 				local sametarget = UnitIsUnit("target", raidLeaderUnitID .. "target")
 
-				if not isFollowing then
+				if not isFollowing and checkfollow then
 					box1.texture:SetColorTexture(1, 1, 1, 1)
 				elseif not IsCurrentSpell("Attack") then
 					box1.texture:SetColorTexture(0, 1, 0, 1)
@@ -153,7 +174,7 @@ f:SetScript("OnUpdate", function(self, elapsed)
 				local usable3, noMana3 = IsUsableSpell(huntersMarkName)
 				local close = CheckInteractDistance("target", 3) or false
 				local sametarget = UnitIsUnit("target", "party1target")
-				if not isFollowing then
+				if not isFollowing and checkfollow then
 					box1.texture:SetColorTexture(1, 1, 1, 1)
 				elseif not (IsAutoRepeatSpell("Auto Shot") or IsCurrentSpell("Attack")) then
 					box1.texture:SetColorTexture(0, 1, 0, 1)
@@ -174,7 +195,7 @@ f:SetScript("OnUpdate", function(self, elapsed)
 				local name, _, _, _, _, _, sourceUnit =
 					AuraUtil.FindAuraByName(faerieFireFeralName, "target", "HARMFUL")
 
-				if not isFollowing then
+				if not isFollowing and checkfollow then
 					box1.texture:SetColorTexture(1, 1, 1, 1)
 				elseif not IsCurrentSpell("Attack") then
 					box1.texture:SetColorTexture(0, 1, 0, 1)
@@ -195,7 +216,7 @@ f:SetScript("OnUpdate", function(self, elapsed)
 				local usable, noMana = IsUsableSpell(wingclipname)
 				local sametarget = UnitIsUnit("target", "party1target")
 
-				if not isFollowing then
+				if not isFollowing and checkfollow then
 					box1.texture:SetColorTexture(1, 1, 1, 1)
 				elseif not IsCurrentSpell("Attack") then
 					box1.texture:SetColorTexture(0, 1, 0, 1)
