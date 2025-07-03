@@ -108,11 +108,11 @@ f:SetScript("OnUpdate", function(self, elapsed)
 		if UnitAffectingCombat("party1") and UnitHealth("party1target") ~= UnitHealthMax("party1target") then
 			box1.texture:SetColorTexture(1, 1, 0, 1)
 
-			local serpentStingName = GetSpellInfo(1978)
-			local name, _, _, _, _, _, sourceUnit = AuraUtil.FindAuraByName(serpentStingName, "target", "HARMFUL")
-			local usable, noMana = IsUsableSpell(serpentStingName)
-
 			if selectedOption == "Arcane Shot" then
+				local serpentStingName = GetSpellInfo(1978)
+				local name, _, _, _, _, _, sourceUnit = AuraUtil.FindAuraByName(serpentStingName, "target", "HARMFUL")
+				local usable, noMana = IsUsableSpell(serpentStingName)
+				local usable2, noMana2 = IsUsableSpell("Arcane Shot")
 				if not isFollowing then
 					box1.texture:SetColorTexture(1, 1, 1, 1)
 				elseif not (IsAutoRepeatSpell("Auto Shot") or IsCurrentSpell("Attack")) then
@@ -126,14 +126,23 @@ f:SetScript("OnUpdate", function(self, elapsed)
 					and not CheckInteractDistance("target", 3)
 				then
 					box1.texture:SetColorTexture(1, 0, 0, 1)
+				elseif usable2 and not noMana2 and not CheckInteractDistance("target", 3)then
+					box1.texture:SetColorTexture(1, 0, 1, 1)
 				end
 			elseif selectedOption == "Claw" then
+
+                local points = GetComboPoints("player", "target")
+
 				if not isFollowing then
 					box1.texture:SetColorTexture(1, 1, 1, 1)
 				elseif not IsCurrentSpell("Attack") then
 					box1.texture:SetColorTexture(0, 1, 0, 1)
 				elseif not UnitIsUnit("target", "party1target") then
 					box1.texture:SetColorTexture(0, 0, 1, 1)
+                elseif GetComboPoints >= 3 then
+                        box1.texture:SetColorTexture(1, 0, 0, 1)
+                elseif IsUsableSpell("Claw")
+                		box1.texture:SetColorTexture(0, 1, 1, 1)
 				end
 			else
 				local start, duration, enabled = GetSpellCooldown("Raptor Strike")
