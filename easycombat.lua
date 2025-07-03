@@ -110,9 +110,12 @@ f:SetScript("OnUpdate", function(self, elapsed)
 
 			if selectedOption == "Arcane Shot" then
 				local serpentStingName = GetSpellInfo(1978)
+				local huntersMarkName = GetSpellInfo(1130)
 				local name, _, _, _, _, _, sourceUnit = AuraUtil.FindAuraByName(serpentStingName, "target", "HARMFUL")
+				local name2, _, _, _, _, _, sourceUnit2 = AuraUtil.FindAuraByName(huntersMarkName, "target", "HARMFUL")
 				local usable, noMana = IsUsableSpell(serpentStingName)
 				local usable2, noMana2 = IsUsableSpell("Arcane Shot")
+				local usable3, noMana3 = IsUsableSpell(huntersMarkName)
 				local close = CheckInteractDistance("target", 3) or false
 				local sametarget = UnitIsUnit("target", "party1target")
 				if not isFollowing then
@@ -123,6 +126,8 @@ f:SetScript("OnUpdate", function(self, elapsed)
 					box1.texture:SetColorTexture(0, 0, 1, 1)
 				elseif not (name and sourceUnit == "player") and usable and not noMana and not close then
 					box1.texture:SetColorTexture(1, 0, 0, 1)
+				elseif not (name and sourceUnit2 == "player") and usable3 and not noMana3 then
+					box1.texture:SetColorTexture(1, 0, 1, 1)
 				elseif usable2 and not noMana2 and not close then
 					box1.texture:SetColorTexture(0, 1, 1, 1)
 				end
@@ -162,7 +167,7 @@ f:RegisterEvent("AUTOFOLLOW_BEGIN")
 f:RegisterEvent("AUTOFOLLOW_END")
 f:RegisterEvent("GROUP_ROSTER_UPDATE")
 f:RegisterEvent("PLAYER_ENTERING_WORLD")
-
+f:RegisterEvent("MERCHANT_SHOW")
 f:SetScript("OnEvent", function(self, event, ...)
 	if IsInRaid() then
 		print("You are in a raid!")
@@ -188,5 +193,26 @@ f:SetScript("OnEvent", function(self, event, ...)
 	elseif event == "AUTOFOLLOW_END" then
 		isFollowing = false
 		print("Stopped following")
+	end
+
+	if event == "MERCHANT_SHOW" then
+		print("vendor opened!")
+
+		for bag = 0, NUM_BAG_SLOTS do
+			local numSlots = C_Container.GetContainerNumSlots(bag)
+			for slot = 1, numSlots do
+				local itemInfo = C_Container.GetContainerItemInfo(bag, slot)
+				if itemInfo then
+					local itemLink = C_Container.GetContainerItemLink(bag, slot)
+					if itemLink then
+						local _, _, itemRarity, _, _, _, _, _, _, _, itemPrice = GetItemInfo(itemLink)
+						if (itemRarity == 0 or itemRarity == 1) and itemPrice > 0 then
+							C_Container.UseContainerItem(bag, slot)
+							print("Sold: " .. itemLink .. " x" .. itemInfo.stackCount)
+						end
+					end
+				end
+			end
+		end
 	end
 end)
