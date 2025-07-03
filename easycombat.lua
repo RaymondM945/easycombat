@@ -168,6 +168,7 @@ f:SetScript("OnUpdate", function(self, elapsed)
 				end
 			elseif selectedOption == "Claw" then
 				local points = GetComboPoints("player", "target")
+				local usable, noMana = IsUsableSpell("Claw")
 
 				if not isFollowing then
 					box1.texture:SetColorTexture(1, 1, 1, 1)
@@ -175,9 +176,9 @@ f:SetScript("OnUpdate", function(self, elapsed)
 					box1.texture:SetColorTexture(0, 1, 0, 1)
 				elseif not UnitIsUnit("target", "party1target") then
 					box1.texture:SetColorTexture(0, 0, 1, 1)
-				elseif GetComboPoints >= 3 then
+				elseif points >= 3 then
 					box1.texture:SetColorTexture(1, 0, 0, 1)
-				elseif IsUsableSpell("Claw") then
+				elseif usable and not noMana then
 					box1.texture:SetColorTexture(0, 1, 1, 1)
 				end
 			else
