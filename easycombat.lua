@@ -66,13 +66,23 @@ f:SetScript("OnUpdate", function(self, elapsed)
 				elseif not UnitIsUnit("target", "party1target") then
 					box1.texture:SetColorTexture(0, 0, 1, 1)
 				end
-			else
+			elseif selectedOption == "Claw"
 				if not isFollowing then
 					box1.texture:SetColorTexture(1, 1, 1, 1)
 				elseif not IsCurrentSpell("Attack") then
 					box1.texture:SetColorTexture(0, 1, 0, 1)
 				elseif not UnitIsUnit("target", "party1target") then
 					box1.texture:SetColorTexture(0, 0, 1, 1)
+				end
+            else
+				if not isFollowing then
+					box1.texture:SetColorTexture(1, 1, 1, 1)
+				elseif not IsCurrentSpell("Attack") then
+					box1.texture:SetColorTexture(0, 1, 0, 1)
+				elseif not UnitIsUnit("target", "party1target") then
+					box1.texture:SetColorTexture(0, 0, 1, 1)
+                elseif IsUsableSpell("Raptor Strike") then
+                    box1.texture:SetColorTexture(0, 1, 1, 1)
 				end
 			end
 		else
