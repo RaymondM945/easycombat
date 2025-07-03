@@ -17,6 +17,12 @@ local function OnClick(self)
 	UIDropDownMenu_SetSelectedID(dropdown, self:GetID())
 	selectedOption = self.value
 	print("You selected: " .. self:GetText())
+
+	if selectedOption == "Raptor Strike" then
+		ChangeActionBarPage(6)
+	elseif selectedOption == "Arcane Shot" then
+		ChangeActionBarPage(1)
+	end
 end
 
 local function Initialize(self, level)
