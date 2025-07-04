@@ -220,6 +220,8 @@ f:SetScript("OnUpdate", function(self, elapsed)
 					box1.texture:SetColorTexture(0, 1, 1, 1)
 				end
 			elseif selectedOption == "Wrath" then
+				local starfire = GetSpellInfo(2912)
+				local usable3, noMana3 = IsUsableSpell(starfire)
 				local wrath = GetSpellInfo(5176)
 				local usable, noMana = IsUsableSpell(wrath)
 
@@ -244,8 +246,10 @@ f:SetScript("OnUpdate", function(self, elapsed)
 					box1.texture:SetColorTexture(1, 0, 1, 1)
 				elseif usable2 and not noMana2 and not hasMoonfire then
 					box1.texture:SetColorTexture(1, 0, 0, 1)
-				elseif usable and not noMana and spellName ~= wrath then
+				elseif usable3 and not noMana3 and spellName ~= starfire then
 					box1.texture:SetColorTexture(0, 1, 1, 1)
+					-- elseif usable and not noMana and spellName ~= wrath then
+					-- 	box1.texture:SetColorTexture(0, 1, 1, 1)
 				end
 			else
 				local start, duration, enabled = GetSpellCooldown("Raptor Strike")
