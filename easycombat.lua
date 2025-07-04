@@ -225,10 +225,9 @@ f:SetScript("OnUpdate", function(self, elapsed)
 
 				local spellName, _, _, startTime, endTime, isTradeSkill = UnitCastingInfo("player")
 
-				if spellName == GetSpellInfo(5176) then
-					print("You are casting Wrath!")
-				end
-
+				local moonfire = GetSpellInfo(8921)
+				local usable2, noMana2 = IsUsableSpell(moonfire)
+				local hasMoonfire = AuraUtil.FindAuraByName(moonfire, "target", "HARMFUL|PLAYER") ~= nil
 				local sametarget = UnitIsUnit("target", "party1target")
 
 				if not isFollowing and checkfollow then
@@ -237,6 +236,8 @@ f:SetScript("OnUpdate", function(self, elapsed)
 					box1.texture:SetColorTexture(0, 1, 0, 1)
 				elseif not sametarget then
 					box1.texture:SetColorTexture(0, 0, 1, 1)
+				elseif usable2 and not noMana2 and not hasMoonfire then
+					box1.texture:SetColorTexture(1, 0, 0, 1)
 				elseif usable and not noMana and spellName ~= wrath then
 					box1.texture:SetColorTexture(0, 1, 1, 1)
 				end
