@@ -28,6 +28,8 @@ local function OnClick(self)
 		ChangeActionBarPage(4)
 	elseif self:GetText() == "Hunter Range Raid (5)" then
 		ChangeActionBarPage(5)
+	elseif self:GetText() == "Moonkin (3)" then
+		ChangeActionBarPage(3)
 	end
 end
 
@@ -55,6 +57,11 @@ local function Initialize(self, level)
 	UIDropDownMenu_AddButton(info, level)
 	info.text = "Hunter Range Raid (5)"
 	info.value = "Arcane Shot"
+	info.func = OnClick
+	UIDropDownMenu_AddButton(info, level)
+
+	info.text = "Moonkin (3)"
+	info.value = "Wrath"
 	info.func = OnClick
 	UIDropDownMenu_AddButton(info, level)
 end
@@ -128,16 +135,19 @@ f:SetScript("OnUpdate", function(self, elapsed)
 					box1.texture:SetColorTexture(0, 1, 1, 1)
 				end
 			elseif selectedOption == "Claw" then
+				local usable, noMana = IsUsableSpell(wingclipname)
+				local sametarget = UnitIsUnit("target", raidLeaderUnitID .. "target")
+
 				local points = GetComboPoints("player", "target")
 				if not isFollowing and checkfollow then
 					box1.texture:SetColorTexture(1, 1, 1, 1)
 				elseif not IsCurrentSpell("Attack") then
 					box1.texture:SetColorTexture(0, 1, 0, 1)
-				elseif not UnitIsUnit("target", raidLeaderUnitID .. "target") then
+				elseif not sametarget then
 					box1.texture:SetColorTexture(0, 0, 1, 1)
 				elseif GetComboPoints >= 3 then
 					box1.texture:SetColorTexture(1, 0, 0, 1)
-				elseif IsUsableSpell("Claw") then
+				elseif usable and not noMana then
 					box1.texture:SetColorTexture(0, 1, 1, 1)
 				end
 			else
@@ -195,18 +205,39 @@ f:SetScript("OnUpdate", function(self, elapsed)
 				local usable2, noMana2 = IsUsableSpell(faerieFireFeralName)
 				local name, _, _, _, _, _, sourceUnit =
 					AuraUtil.FindAuraByName(faerieFireFeralName, "target", "HARMFUL")
-
+				local sametarget = UnitIsUnit("target", "party1target")
 				if not isFollowing and checkfollow then
 					box1.texture:SetColorTexture(1, 1, 1, 1)
 				elseif not IsCurrentSpell("Attack") then
 					box1.texture:SetColorTexture(0, 1, 0, 1)
-				elseif not UnitIsUnit("target", "party1target") then
+				elseif not sametarget then
 					box1.texture:SetColorTexture(0, 0, 1, 1)
 				elseif not (name and sourceUnit == "player") and usable2 and not noMana2 then
 					box1.texture:SetColorTexture(1, 0, 1, 1)
 				elseif points >= 3 then
 					box1.texture:SetColorTexture(1, 0, 0, 1)
 				elseif usable and not noMana then
+					box1.texture:SetColorTexture(0, 1, 1, 1)
+				end
+			elseif selectedOption == "Wrath" then
+				local wrath = GetSpellInfo(5176)
+				local usable, noMana = IsUsableSpell(wrath)
+
+				local spellName, _, _, startTime, endTime, isTradeSkill = UnitCastingInfo("player")
+
+				if spellName == GetSpellInfo(5176) then
+					print("You are casting Wrath!")
+				end
+
+				local sametarget = UnitIsUnit("target", "party1target")
+
+				if not isFollowing and checkfollow then
+					box1.texture:SetColorTexture(1, 1, 1, 1)
+				elseif not IsCurrentSpell("Attack") then
+					box1.texture:SetColorTexture(0, 1, 0, 1)
+				elseif not sametarget then
+					box1.texture:SetColorTexture(0, 0, 1, 1)
+				elseif usable and not noMana and spellName ~= wrath then
 					box1.texture:SetColorTexture(0, 1, 1, 1)
 				end
 			else
@@ -265,26 +296,5 @@ f:SetScript("OnEvent", function(self, event, ...)
 	elseif event == "AUTOFOLLOW_END" then
 		isFollowing = false
 		print("Stopped following")
-	end
-
-	if event == "MERCHANT_SHOW" then
-		print("vendor opened!")
-
-		for bag = 0, NUM_BAG_SLOTS do
-			local numSlots = C_Container.GetContainerNumSlots(bag)
-			for slot = 1, numSlots do
-				local itemInfo = C_Container.GetContainerItemInfo(bag, slot)
-				if itemInfo then
-					local itemLink = C_Container.GetContainerItemLink(bag, slot)
-					if itemLink then
-						local _, _, itemRarity, _, _, _, _, _, _, _, itemPrice = GetItemInfo(itemLink)
-						if (itemRarity == 0 or itemRarity == 1) and itemPrice > 0 then
-							C_Container.UseContainerItem(bag, slot)
-							print("Sold: " .. itemLink .. " x" .. itemInfo.stackCount)
-						end
-					end
-				end
-			end
-		end
 	end
 end)
