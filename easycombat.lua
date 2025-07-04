@@ -228,6 +228,10 @@ f:SetScript("OnUpdate", function(self, elapsed)
 				local moonfire = GetSpellInfo(8921)
 				local usable2, noMana2 = IsUsableSpell(moonfire)
 				local hasMoonfire = AuraUtil.FindAuraByName(moonfire, "target", "HARMFUL|PLAYER") ~= nil
+
+				local faerieFire = GetSpellInfo(770)
+				local usable3, noMana3 = IsUsableSpell(faerieFire)
+				local hasfaerieFire = AuraUtil.FindAuraByName(faerieFire, "target", "HARMFUL|PLAYER") ~= nil
 				local sametarget = UnitIsUnit("target", "party1target")
 
 				if not isFollowing and checkfollow then
@@ -236,6 +240,8 @@ f:SetScript("OnUpdate", function(self, elapsed)
 					box1.texture:SetColorTexture(0, 1, 0, 1)
 				elseif not sametarget then
 					box1.texture:SetColorTexture(0, 0, 1, 1)
+				elseif usable3 and not noMana3 and not hasfaerieFire then
+					box1.texture:SetColorTexture(1, 0, 1, 1)
 				elseif usable2 and not noMana2 and not hasMoonfire then
 					box1.texture:SetColorTexture(1, 0, 0, 1)
 				elseif usable and not noMana and spellName ~= wrath then
