@@ -1,6 +1,7 @@
 local selectedOption = "Claw"
 local raidLeaderUnitID = nil
 local checkfollow = true
+local WingclipEnabled = true
 
 local myFrame = CreateFrame("Frame", "MySelectionFrame", UIParent, "BasicFrameTemplateWithInset")
 myFrame:SetSize(220, 70)
@@ -91,6 +92,24 @@ myCheckbox:SetScript("OnClick", function(self)
 	end
 end)
 
+local myCheckbox2 = CreateFrame("CheckButton", "MySelectionFrameCheckbox2", myFrame, "ChatConfigCheckButtonTemplate")
+
+myCheckbox2:SetPoint("TOPLEFT", dropdown, "BOTTOMLEFT", 0, -25)
+
+MySelectionFrameCheckbox2Text:SetText("Do Wing Clip")
+
+myCheckbox2:SetChecked(WingclipEnabled)
+
+myCheckbox2:SetScript("OnClick", function(self)
+	if self:GetChecked() then
+		print("wing clip enabled!")
+		WingclipEnabled = true
+	else
+		print("wing clip disabled!")
+		WingclipEnabled = false
+	end
+end)
+
 local box1 = CreateFrame("Frame", "MyBox1", UIParent)
 box1:SetSize(50, 50)
 box1:SetPoint("CENTER", 25, 0)
@@ -161,9 +180,9 @@ f:SetScript("OnUpdate", function(self, elapsed)
 			else
 				local start, duration, enabled = GetSpellCooldown("Raptor Strike")
 
-				-- local wingclipname = GetSpellInfo(2974)
-				-- local name, _, _, _, _, _, sourceUnit = AuraUtil.FindAuraByName(wingclipname, "target", "HARMFUL")
-				-- local usable, noMana = IsUsableSpell(wingclipname)
+				local wingclipname = GetSpellInfo(2974)
+				local name, _, _, _, _, _, sourceUnit = AuraUtil.FindAuraByName(wingclipname, "target", "HARMFUL")
+				local usable, noMana = IsUsableSpell(wingclipname)
 				local sametarget = UnitIsUnit("target", raidLeaderUnitID .. "target")
 
 				if not isFollowing and checkfollow then
@@ -174,8 +193,8 @@ f:SetScript("OnUpdate", function(self, elapsed)
 					box1.texture:SetColorTexture(0, 0, 1, 1)
 				elseif IsUsableSpell("Raptor Strike") and start == 0 then
 					box1.texture:SetColorTexture(0, 1, 1, 1)
-					-- elseif not (name and sourceUnit == "player") and usable and not noMana then
-					-- 	box1.texture:SetColorTexture(1, 0, 0, 1)
+				elseif not (name and sourceUnit == "player") and usable and not noMana and WingclipEnabled then
+					box1.texture:SetColorTexture(1, 0, 0, 1)
 				end
 			end
 		end
@@ -262,21 +281,21 @@ f:SetScript("OnUpdate", function(self, elapsed)
 			else
 				local start, duration, enabled = GetSpellCooldown("Raptor Strike")
 
-				-- local wingclipname = GetSpellInfo(2974)
-				-- local name, _, _, _, _, _, sourceUnit = AuraUtil.FindAuraByName(wingclipname, "target", "HARMFUL")
-				-- local usable, noMana = IsUsableSpell(wingclipname)
+				local wingclipname = GetSpellInfo(2974)
+				local name, _, _, _, _, _, sourceUnit = AuraUtil.FindAuraByName(wingclipname, "target", "HARMFUL")
+				local usable, noMana = IsUsableSpell(wingclipname)
 				local sametarget = UnitIsUnit("target", "party1target")
-
+				local usable2, noMana2 = IsUsableSpell("Raptor Strike")
 				if not isFollowing and checkfollow then
 					box1.texture:SetColorTexture(1, 1, 1, 1)
 				elseif not IsCurrentSpell("Attack") then
 					box1.texture:SetColorTexture(0, 1, 0, 1)
 				elseif not sametarget then
 					box1.texture:SetColorTexture(0, 0, 1, 1)
-				-- elseif not (name and sourceUnit == "player") and usable and not noMana then
-				-- 	box1.texture:SetColorTexture(1, 0, 0, 1)
-				elseif IsUsableSpell("Raptor Strike") and start == 0 then
+				elseif usable2 and not noMana2 and start == 0 then
 					box1.texture:SetColorTexture(0, 1, 1, 1)
+				elseif not (name and sourceUnit == "player") and usable and not noMana and WingclipEnabled then
+					box1.texture:SetColorTexture(1, 0, 0, 1)
 				end
 			end
 		else
