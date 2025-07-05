@@ -153,7 +153,7 @@ f:SetScript("OnUpdate", function(self, elapsed)
 					box1.texture:SetColorTexture(0, 0, 1, 1)
 				elseif not hasfaerieFire and usable2 and not noMana2 then
 					box1.texture:SetColorTexture(1, 0, 1, 1)
-				elseif GetComboPoints >= 3 then
+				elseif points >= 3 then
 					box1.texture:SetColorTexture(1, 0, 0, 1)
 				elseif usable and not noMana then
 					box1.texture:SetColorTexture(0, 1, 1, 1)
