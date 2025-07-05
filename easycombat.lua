@@ -137,9 +137,10 @@ f:SetScript("OnUpdate", function(self, elapsed)
 				end
 			elseif selectedOption == "Claw" then
 				local sametarget = UnitIsUnit("target", raidLeaderUnitID .. "target")
-				local clawName = GetSpellInfo(1082)
-				local usable, noMana = IsUsableSpell(clawName)
 
+				local usable, noMana = IsUsableSpell("Claw")
+				print(raidLeaderUnitID)
+				print(IsUsableSpell("Claw"))
 				local faerieFireFeralName = GetSpellInfo(16857)
 				local usable2, noMana2 = IsUsableSpell(faerieFireFeralName)
 				local hasfaerieFire = AuraUtil.FindAuraByName(faerieFireFeralName, "target", "HARMFUL|PLAYER") ~= nil
