@@ -19,8 +19,9 @@ local function OnClick(self)
 	UIDropDownMenu_SetSelectedID(dropdown, self:GetID())
 	selectedOption = self.value
 	print("You selected: " .. self:GetText())
-
-	if self:GetText() == "Hunter Melee (6)" then
+	if self:GetText() == "Druid" then
+		ChangeActionBarPage(1)
+	elseif self:GetText() == "Hunter Melee (6)" then
 		ChangeActionBarPage(6)
 	elseif self:GetText() == "Hunter Range (1)" then
 		ChangeActionBarPage(1)
@@ -242,11 +243,11 @@ f:SetScript("OnUpdate", function(self, elapsed)
 					box1.texture:SetColorTexture(0, 1, 0, 1)
 				elseif not sametarget then
 					box1.texture:SetColorTexture(0, 0, 1, 1)
-				elseif usable3 and not UnitPower("player", 0) <= 250 and not hasfaerieFire then
+				elseif usable3 and not UnitPower("player", 0) and not hasfaerieFire then
 					box1.texture:SetColorTexture(1, 0, 1, 1)
 				elseif usable2 and not noMana2 and not hasMoonfire then
 					box1.texture:SetColorTexture(1, 0, 0, 1)
-				elseif usable3 and not noMana3 and spellName ~= starfire then
+				elseif usable3 and UnitPower("player", 0) > 250 and spellName ~= starfire then
 					box1.texture:SetColorTexture(0, 1, 1, 1)
 					-- elseif usable and not noMana and spellName ~= wrath then
 					-- 	box1.texture:SetColorTexture(0, 1, 1, 1)
