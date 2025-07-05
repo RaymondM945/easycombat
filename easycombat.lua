@@ -136,9 +136,9 @@ f:SetScript("OnUpdate", function(self, elapsed)
 					box1.texture:SetColorTexture(0, 1, 1, 1)
 				end
 			elseif selectedOption == "Claw" then
-				local usable, noMana = IsUsableSpell(wingclipname)
 				local sametarget = UnitIsUnit("target", raidLeaderUnitID .. "target")
-
+				local clawName = GetSpellInfo(1082)
+				local usable, noMana = IsUsableSpell("Claw")
 				local points = GetComboPoints("player", "target")
 				if not isFollowing and checkfollow then
 					box1.texture:SetColorTexture(1, 1, 1, 1)
