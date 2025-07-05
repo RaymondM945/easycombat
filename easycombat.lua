@@ -138,7 +138,11 @@ f:SetScript("OnUpdate", function(self, elapsed)
 			elseif selectedOption == "Claw" then
 				local sametarget = UnitIsUnit("target", raidLeaderUnitID .. "target")
 				local clawName = GetSpellInfo(1082)
-				local usable, noMana = IsUsableSpell("Claw")
+				local usable, noMana = IsUsableSpell(clawName)
+
+				local faerieFireFeralName = GetSpellInfo(16857)
+				local usable2, noMana2 = IsUsableSpell(faerieFireFeralName)
+				local hasfaerieFire = AuraUtil.FindAuraByName(faerieFireFeralName, "target", "HARMFUL|PLAYER") ~= nil
 				local points = GetComboPoints("player", "target")
 				if not isFollowing and checkfollow then
 					box1.texture:SetColorTexture(1, 1, 1, 1)
@@ -146,6 +150,8 @@ f:SetScript("OnUpdate", function(self, elapsed)
 					box1.texture:SetColorTexture(0, 1, 0, 1)
 				elseif not sametarget then
 					box1.texture:SetColorTexture(0, 0, 1, 1)
+				elseif not hasfaerieFire and usable2 and not noMana2 then
+					box1.texture:SetColorTexture(1, 0, 1, 1)
 				elseif GetComboPoints >= 3 then
 					box1.texture:SetColorTexture(1, 0, 0, 1)
 				elseif usable and not noMana then
