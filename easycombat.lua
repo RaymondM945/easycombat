@@ -2,7 +2,7 @@ local selectedOption = "Claw"
 local raidLeaderUnitID = nil
 local checkfollow = true
 local WingclipEnabled = true
-
+local selectedThreshold = 95
 local myFrame = CreateFrame("Frame", "MySelectionFrame", UIParent, "BasicFrameTemplateWithInset")
 myFrame:SetSize(220, 70)
 myFrame:SetPoint("TOP", UIParent, "TOP", 0, 0)
@@ -73,6 +73,32 @@ UIDropDownMenu_SetWidth(dropdown, 150)
 UIDropDownMenu_SetButtonWidth(dropdown, 124)
 UIDropDownMenu_SetSelectedID(dropdown, 1)
 UIDropDownMenu_JustifyText(dropdown, "LEFT")
+
+local dropdown3 = CreateFrame("Frame", "MyDropdown3", myFrame, "UIDropDownMenuTemplate")
+dropdown3:SetPoint("TOPLEFT", dropdown, "BOTTOMLEFT", 0, -50)
+
+local function OnClickDropdown3(self)
+	UIDropDownMenu_SetSelectedID(dropdown3, self:GetID())
+	selectedThreshold = tonumber(self.value)
+	print("Threshold selected: " .. selectedThreshold .. "%")
+end
+
+local function InitializeDropdown3(self, level)
+	local thresholds = { 95, 90, 85, 80, 75, 70, 65, 60 }
+	for i, value in ipairs(thresholds) do
+		local info = UIDropDownMenu_CreateInfo()
+		info.text = tostring(value)
+		info.value = value
+		info.func = OnClickDropdown3
+		UIDropDownMenu_AddButton(info, level)
+	end
+end
+
+UIDropDownMenu_Initialize(dropdown3, InitializeDropdown3)
+UIDropDownMenu_SetWidth(dropdown3, 150)
+UIDropDownMenu_SetButtonWidth(dropdown3, 124)
+UIDropDownMenu_SetSelectedID(dropdown3, 1)
+UIDropDownMenu_JustifyText(dropdown3, "LEFT")
 
 local myCheckbox = CreateFrame("CheckButton", "MySelectionFrameCheckbox", myFrame, "ChatConfigCheckButtonTemplate")
 
@@ -201,8 +227,8 @@ f:SetScript("OnUpdate", function(self, elapsed)
 	elseif IsInGroup() then
 		local targethealth = UnitHealth("party1target")
 		local targetmaxHealth = UnitHealthMax("party1target")
-		local hpPercent = (health / maxHealth) * 100
-		if UnitAffectingCombat("party1") and hpPercent < 95 then
+		local hpPercent = (targethealth / targetmaxHealth) * 100
+		if UnitAffectingCombat("party1") and hpPercent < selectedThreshold then
 			box1.texture:SetColorTexture(1, 1, 0, 1)
 
 			if selectedOption == "Arcane Shot" then
