@@ -199,7 +199,10 @@ f:SetScript("OnUpdate", function(self, elapsed)
 			end
 		end
 	elseif IsInGroup() then
-		if UnitAffectingCombat("party1") and UnitHealth("party1target") ~= UnitHealthMax("party1target") then
+		local targethealth = UnitHealth("party1target")
+		local targetmaxHealth = UnitHealthMax("party1target")
+		local hpPercent = (health / maxHealth) * 100
+		if UnitAffectingCombat("party1") and hpPercent < 95 then
 			box1.texture:SetColorTexture(1, 1, 0, 1)
 
 			if selectedOption == "Arcane Shot" then
